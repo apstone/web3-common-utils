@@ -1,30 +1,35 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { ethers } from 'ethers';
 
-import useENS from '../../hooks/useENS';
-import { initialize } from '../..';
+import useENS from '../../src/hooks/useENS';
+import { initialize } from '../../src/index';
 
 describe('useENS', () => {
+  it('throws an error when the provider is not initialized', () => {
+    const { result } = renderHook(() => useENS('0x123'));
+    expect(result.error).toEqual(
+      new Error('Provider is not initialized. Please call initialize() first.')
+    );
+  });
   it('returns null when address is not provided', () => {
     initialize({
-      infuraKey: 'my-infura-key',
+      infuraProviderConfig: {
+        network: 'mainnet',
+        projectId: 'my-project-id',
+        projectSecret: 'my-project-secret',
+      },
     });
     const { result } = renderHook(() => useENS(''));
     expect(result.current).toBeNull();
   });
 
-  it('throws an error when Infura key is not set', () => {
-    initialize({
-      infuraKey: undefined,
-    });
-
-    expect(() => useENS('0x123456789abcdef')).toThrowError(
-      'Infura key not set'
-    );
-  });
   it('resolves the ENS name for the given address', async () => {
     initialize({
-      infuraKey: 'my-infura-key',
+      infuraProviderConfig: {
+        network: 'mainnet',
+        projectId: 'my-project-id',
+        projectSecret: 'my-project-secret',
+      },
     });
     const ensName = 'my-ens-name.eth';
     const lookupAddressMock = jest.fn(() => Promise.resolve(ensName));
@@ -37,13 +42,15 @@ describe('useENS', () => {
       });
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useENS('0x123456789abcdef')
+      useENS('0x21C7D619baE3bF026B469eFe44f9157D59131e0a')
     );
     expect(result.current).toBeNull();
 
     await waitForNextUpdate();
 
-    expect(lookupAddressMock).toHaveBeenCalledWith('0x123456789abcdef');
+    expect(lookupAddressMock).toHaveBeenCalledWith(
+      '0x21C7D619baE3bF026B469eFe44f9157D59131e0a'
+    );
     expect(result.current).toBe(ensName);
 
     InfuraProviderSpy.mockRestore();

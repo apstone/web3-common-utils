@@ -1,5 +1,9 @@
 export type Config = {
-  infuraKey?: string;
+  infuraProviderConfig?: {
+    network: string;
+    projectId: string;
+    projectSecret: string;
+  };
 };
 
 export let config: Config = {};

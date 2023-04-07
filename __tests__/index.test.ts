@@ -1,4 +1,4 @@
-import { getConfig, initialize } from '../index';
+import { Config, getConfig, initialize } from '../src/index';
 
 describe('getConfig', () => {
   beforeEach(() => {
@@ -11,8 +11,12 @@ describe('getConfig', () => {
   });
 
   it('should return the current config', () => {
-    const mockConfig = {
-      infuraKey: 'my-infura-key',
+    const mockConfig: Config = {
+      infuraProviderConfig: {
+        network: 'mainnet',
+        projectId: 'my-project-id',
+        projectSecret: 'my-project-secret',
+      },
     };
     initialize(mockConfig);
     const result = getConfig();
@@ -26,18 +30,36 @@ describe('initialize', () => {
   });
 
   it('should set the config options', () => {
-    const options = { infuraKey: 'my-infura-key' };
+    const options: Config = {
+      infuraProviderConfig: {
+        network: 'mainnet',
+        projectId: 'my-project-id',
+        projectSecret: 'my-project-secret',
+      },
+    };
     initialize(options);
     const result = getConfig();
     expect(result).toEqual(options);
   });
 
   it('should merge with existing config options', () => {
-    const existingConfig = { infuraKey: 'my-infura-key' };
+    const existingConfig: Config = {
+      infuraProviderConfig: {
+        network: 'mainnet',
+        projectId: 'my-project-id',
+        projectSecret: 'my-project-secret',
+      },
+    };
     initialize(existingConfig);
-    const newOptions = { infuraKey: 'my-new-infura-key' };
+    const newOptions: Config = {
+      infuraProviderConfig: {
+        network: 'mainnet',
+        projectId: 'my-project-id-123',
+        projectSecret: 'my-project-secret',
+      },
+    };
     initialize(newOptions);
     const result = getConfig();
-    expect(result).toEqual({ infuraKey: 'my-new-infura-key' });
+    expect(result).toEqual(newOptions);
   });
 });

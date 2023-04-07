@@ -3,13 +3,20 @@ import { ethers } from 'ethers';
 import { config } from '../index';
 
 const useENS = (address: string) => {
-  if (!config.infuraKey) throw new Error('Infura key not set');
-
   const [ens, setEns] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!config.infuraProviderConfig)
+      throw new Error(
+        'Provider is not initialized. Please call initialize() first.'
+      );
+
     if (address) {
-      const provider = new ethers.InfuraProvider('homestead', config.infuraKey);
+      const provider = new ethers.InfuraProvider(
+        config.infuraProviderConfig.network,
+        config.infuraProviderConfig.projectId,
+        config.infuraProviderConfig.projectSecret
+      );
       provider.lookupAddress(address).then((ens) => {
         setEns(ens);
       });
