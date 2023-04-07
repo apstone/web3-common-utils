@@ -19,7 +19,11 @@ import React from 'react';
 import { useENS, initialize } from 'web3-common-utils';
 
 initialize({
-  infuraKey: 'your-infura-key',
+  infuraProviderConfig: {
+    network: 'mainnet',
+    projectId: 'my-project-id',
+    projectSecret: 'my-project-secret',
+  },
 });
 
 function MyComponent() {
