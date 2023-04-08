@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { ethers } from 'ethers';
 
-import useENS from '../../src/hooks/useENS';
+import { useENS } from '../../src/hooks/useENS';
 import { initialize } from '../../src/index';
 
 describe('useENS', () => {

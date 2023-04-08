@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "ESNext",
     "strict": true,
     "jsx": "react",
     "esModuleInterop": true,
@@ -12,9 +12,6 @@
     "resolveJsonModule": true,
     "declaration": true,
     "outDir": "./dist",
-    "lib": [
-      "es6",
-      "dom"
-    ]
-  },
+    "lib": ["es6", "dom"]
+  }
 }

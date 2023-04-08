@@ -17,13 +17,18 @@ const useENS = (address: string) => {
         config.infuraProviderConfig.projectId,
         config.infuraProviderConfig.projectSecret
       );
-      provider.lookupAddress(address).then((ens) => {
-        setEns(ens);
-      });
+      provider
+        .lookupAddress(address)
+        .then((ens) => {
+          setEns(ens);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [address]);
 
   return ens;
 };
 
-export default useENS;
+export { useENS };

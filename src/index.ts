@@ -1,8 +1,8 @@
 export type Config = {
   infuraProviderConfig?: {
-    network: string;
-    projectId: string;
-    projectSecret: string;
+    network?: string;
+    projectId?: string;
+    projectSecret?: string;
   };
 };
 
